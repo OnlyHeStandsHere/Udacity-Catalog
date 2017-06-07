@@ -1,4 +1,5 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
+from models.restaurants import Restaurant
 
 restaurant = Blueprint('restaurant', __name__)
 
@@ -6,7 +7,7 @@ restaurant = Blueprint('restaurant', __name__)
 # make all of our restaurant routes
 @restaurant.route('/restaurants/')
 def index():
-    return "Here we will display all restaurants"
+    return render_template("/restaurant/index.html")
 
 
 @restaurant.route('/restaurant/<int:restaurant_id>/')
