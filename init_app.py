@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from controllers import restaurant_cont
-from models import restaurants, db
+from models import restaurants, menu_items, db
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///restaurants.db'

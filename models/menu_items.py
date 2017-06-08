@@ -1,0 +1,26 @@
+from models import db
+from models.restaurants import Restaurant
+
+
+class MenuItem(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    desc = db.Column(db.String(250))
+    price = db.Column(db.String(8))
+    course = db.Column(db.String(50))
+    restaurant_id = db.Column(db.Integer, db.ForeignKey(Restaurant.id))
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'desc': self.desc,
+            'price': self.price,
+            'course': self.course,
+            'restaurant_id': self.restaurant_id
+        }
+
+    def __repr__(self):
+        return '<MenuItem:{}>'.format(self.name)

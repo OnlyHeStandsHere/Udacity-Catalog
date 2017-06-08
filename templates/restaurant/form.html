@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <form method="post">
+        <label>Restaurant Name</label>
+        <input type="text" name="restaurant_name" value="{{ restaurant.name }}">
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock %}

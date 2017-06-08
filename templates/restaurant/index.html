@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1> rest index </h1>
-</body>
-</html>
+{% extends "layout.html" %}
+
+{% block content %}
+    {% for restaurant in restaurants %}
+        <h3>{{ restaurant.name }}</h3>
+        <a href={{ url_for("restaurant.update", restaurant_id=restaurant.id) }}>Edit</a>
+        <a href={{ url_for("restaurant.delete", restaurant_id=restaurant.id) }}>Delete</a>
+    {% endfor %}
+
+    <a href={{ url_for("restaurant.create") }}>Add a new restaurant</a>
+{% endblock %}
