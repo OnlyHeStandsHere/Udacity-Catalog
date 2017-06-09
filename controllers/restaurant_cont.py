@@ -57,6 +57,31 @@ def update(restaurant_id):
         return render_template("restaurant/form.html", restaurant='')
 
 
-@restaurant.route("/restaurant/<int:restaurant_id>/delete/")
+@restaurant.route("/restaurant/<int:restaurant_id>/delete/", methods=['GET', 'POST'])
 def delete(restaurant_id):
-    return "Here we delete a restaurant"
+    current_restaurant = Restaurant.query.get(restaurant_id)
+    if current_restaurant:
+        if request.method == "GET":
+            return render_template("restaurant/delete.html", restaurant=current_restaurant)
+        elif request.method == 'POST':
+            db.session.delete(current_restaurant)
+            db.session.commit()
+            flash("Restaurant Deleted Successfully!")
+            return redirect(url_for("restaurant.index"))
+        else:
+            flash("Invalid Request, please try again")
+            return render_template("restaurant/delete.html", restaurant='')
+    else:
+        flash("Restaurant not found, please try again")
+        return render_template("restaurant/delete.html", restaurant='')
+
+
+@restaurant.route("/restaurant/<int:restaurant_id>/menu")
+def show_menu(restaurant_id):
+    current_restaurant = Restaurant.query.get(restaurant_id)
+    if current_restaurant:
+        return render_template("/restaurant/menu.html", restaurant=current_restaurant)
+    else:
+        flash("Restaurant not found. Please try again")
+        return render_template("restaurant/index.html", restaurant='')
+

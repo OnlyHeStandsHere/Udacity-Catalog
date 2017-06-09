@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h4>Are you sure you want to delete {{ restaurant.name }}?</h4>
+    <form method="post">
+        <button type="submit">Delete</button>
+    </form>
+    <a href={{url_for("restaurant.index")}}>Cancel</a>
+{% endblock %}
