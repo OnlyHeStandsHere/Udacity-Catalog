@@ -42,3 +42,23 @@ def update(restaurant_id, menu_item_id):
     else:
         flash("Item not found, please try again")
         return redirect(url_for("restaurant.index"))
+
+
+@menu_items.route("/restaurant/<int:restaurant_id>/menu/<int:menu_item_id>/delete", methods=['GET', 'POST'])
+def delete(restaurant_id, menu_item_id):
+    restaurant = Restaurant.query.get(restaurant_id)
+    menu_item = MenuItem.query.get(menu_item_id)
+    if menu_item:
+        if request.method == "GET":
+            return render_template("menu/delete.html", menu_item=menu_item)
+        elif request.method == "POST":
+            db.session.delete(menu_item)
+            db.session.commit()
+            flash("Menu item successfully deleted!")
+            return redirect(url_for("restaurant.show_menu", restaurant_id=restaurant.id))
+        else:
+            flash("Invalid operation. Please try again")
+            return redirect(url_for("restaurant.show_menu", restaurant_id=restaurant.id))
+    else:
+        flash("Menu item not found. Please try again")
+        return redirect(url_for("restaurant.show_menu", restaurant_id=restaurant.id))
