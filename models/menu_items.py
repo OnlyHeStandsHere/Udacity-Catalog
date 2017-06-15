@@ -1,5 +1,6 @@
 from models import db
 from models.restaurants import Restaurant
+from models.users import User
 
 
 class MenuItem(db.Model):
@@ -10,8 +11,8 @@ class MenuItem(db.Model):
     price = db.Column(db.String(8))
     course = db.Column(db.String(50))
     restaurant_id = db.Column(db.Integer, db.ForeignKey(Restaurant.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
 
-    @property
     def serialize(self):
         return {
             'id': self.id,

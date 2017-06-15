@@ -25,12 +25,13 @@ function signInCallback(authResult) {
         $.ajax({
             type: "POST",
             url: "/google_login?state=" + state,
-            headers: {"X-Requested-With": "XMLHttpRequest"},
+            //headers: {"X-Requested-With": "XMLHttpRequest"},
             contentType: "application/octet-stream; charset=utf-8",
             processData: false,
             data: authResult["code"],
             success: function (result) {
                 console.log("Success response from server")
+                window.location = result;
             }
         })
     }
@@ -42,10 +43,12 @@ function signInCallback(authResult) {
 
 $(document).ready(function () {
     console.log("Document Ready")
-
+    start()
    $('#signInButton').click(function() {
     // signInCallback defined in step 6.
     auth2.grantOfflineAccess().then(signInCallback);
+
+
   });
 
 
