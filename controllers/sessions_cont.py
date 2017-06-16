@@ -2,10 +2,11 @@ from flask import Blueprint, render_template, url_for, redirect, request, flash,
 from flask import session as login_session
 from .helpers import get_state
 from controllers import CLIENT_SECRET_FILE
-import httplib2
 import json
 from oauth2client import client
 import requests
+from models import db
+from models.users import User
 
 
 login = Blueprint("login", __name__)
@@ -37,6 +38,29 @@ def google_login():
         login_session['token'] = credentials.access_token
         login_session['email'] = credentials.id_token['email']
         print(login_session['token'])
+
+        # now make a request for the username
+        url = " https://www.googleapis.com/oauth2/v1/userinfo"
+        params = {"access_token": credentials.access_token, 'alt': 'json'}
+        r = requests.get(url, params=params)
+
+        login_session['user_name'] = r.json().get('name')
+        login_session['picture'] = r.json().get('picture')
+
+        print(login_session['user_name'])
+
+        # if the user doesn't already exist in the db, lets create them
+        user = User.check_user_existence(login_session)
+        if not user:
+            print('Create the user')
+            user_id = login_session.get('id')
+            name = login_session.get('user_name')
+            email = login_session.get('email')
+            picture = login_session.get('picture')
+            user = User(user_id=user_id, name=name, email=email, picture=picture)
+            db.session.add(user)
+            db.session.commit()
+
         flash("Your are now logged in as {}".format(login_session['email']))
         return url_for('restaurant.index')
     else:

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect, request, flash
 from models.restaurants import Restaurant, db
-
+from flask import session as login_session
 restaurant = Blueprint('restaurant', __name__)
 
 
@@ -21,7 +21,7 @@ def create():
     elif request.method == 'POST':
         rest_name = request.form.get("restaurant_name")
         if rest_name:
-            new_restaurant = Restaurant(name=rest_name)
+            new_restaurant = Restaurant(name=rest_name, user_id=login_session.get('id'))
             db.session.add(new_restaurant)
             db.session.commit()
             return redirect(url_for("restaurant.index"))
