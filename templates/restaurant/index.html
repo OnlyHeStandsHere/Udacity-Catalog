@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
+{% include 'heading.html' %}
     {% for restaurant in restaurants %}
         <h3>{{ restaurant.name }}</h3>
         <a href={{ url_for("restaurant.show_menu", restaurant_id=restaurant.id) }}>Menu</a>
