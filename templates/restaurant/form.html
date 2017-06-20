@@ -3,9 +3,13 @@
 {% block content %}
 
     <form method="post">
-        <label>Restaurant Name</label>
-        <input type="text" name="restaurant_name" value="{{ restaurant.name }}">
-        <button type="submit">Submit</button>
+        <div class="form-group">
+            <label for="restaurant-name">Restaurant Name</label>
+            <input type="text" name="restaurant_name" id="restaurant-name" class="form-control" value="{{ restaurant.name }}">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
 
 {% endblock %}
