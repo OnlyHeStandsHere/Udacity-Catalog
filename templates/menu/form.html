@@ -1,20 +1,32 @@
 {% extends "layout.html" %}
 
+{% block nav %}
+    {% include 'heading.html' %}
+{% endblock %}
+
 {% block content %}
 
     <h3>Add an item to {{ restaurant.name }} menu</h3>
     <form method="post">
+        <div class="form-group">
+            <label>Item Name</label>
+            <input type="text" name="name" class="form-control" value="{{ menu_item.name }}">
+        </div>
 
-        <label>Item Name</label>
-        <input type="text" name="name" value="{{ menu_item.name }}"><br>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="desc" class="form-control" rows="3">{{ menu_item.desc }}</textarea>
+        </div>
 
-        <label>Description</label>
-        <textarea type="text" name="desc">{{ menu_item.desc }}</textarea><br>
+        <div class="form-group">
+            <label>Price</label>
+            <input type="text" name="price" class="form-control" value="{{ menu_item.price }}">
+        </div>
 
-        <label>Price</label>
-        <input type="text" name="price" value="{{ menu_item.price }}"><br>
-
-        <button type="submit">Submit</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-success" href={{ url_for("restaurant.show_menu", restaurant_id=restaurant.id) }}>Cancel</a>
+        </div>
     </form>
-    <a href={{ url_for("restaurant.show_menu", restaurant_id=restaurant.id) }}>Cancel</a>
+
 {% endblock %}

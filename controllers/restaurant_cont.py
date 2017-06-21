@@ -8,7 +8,11 @@ restaurant = Blueprint('restaurant', __name__)
 @restaurant.route('/restaurants/')
 def index():
     restaurants = Restaurant.query.all()
-    return render_template("restaurant/index.html", restaurants=restaurants)
+    user_id = login_session.get('id')
+    if user_id:
+        return render_template("restaurant/index.html", restaurants=restaurants)
+    else:
+        return render_template("restaurant/logged_out_index.html", restaurants=restaurants)
 
 
 # creates a new restaurant and serves the form to do so
@@ -79,8 +83,12 @@ def delete(restaurant_id):
 @restaurant.route("/restaurant/<int:restaurant_id>/menu")
 def show_menu(restaurant_id):
     current_restaurant = Restaurant.query.get(restaurant_id)
+    user_id = login_session.get('id')
     if current_restaurant:
-        return render_template("/restaurant/menu.html", restaurant=current_restaurant)
+        if user_id:
+            return render_template("restaurant/menu.html", restaurant=current_restaurant)
+        else:
+            return render_template("restaurant/logged_out_menu.html", restaurant=current_restaurant)
     else:
         flash("Restaurant not found. Please try again")
         return render_template("restaurant/index.html", restaurant='')
